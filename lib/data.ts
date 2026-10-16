@@ -3,9 +3,20 @@ export const TEL = "tel:+14168247400";
 export const WA = "https://wa.me/14168247400";
 export const EMAIL = "classicontariolimos@gmail.com";
 export const CONTACT_NAME = "Abdul Jabbar Chaudrey";
-export const img = (f: string) => `https://media.base44.com/images/public/6a00fb8d57def44ca97fd380/${f}`;
+export const img = (f: string) =>
+  f.startsWith("http://") || f.startsWith("https://") || f.startsWith("/")
+    ? f
+    : `https://media.base44.com/images/public/6a00fb8d57def44ca97fd380/${f}`;
+
 export const fleet = [
-  { name: "2026 Chevrolet Suburban High Country", tag: "Flagship", pax: 6, bags: 6, img: "46700e4f5_IMG_9606.jpeg", text: "Black SUV chauffeur service for Pearson transfers, executive travel and corporate transportation." },
+  {
+    name: "Mercedes-Benz Sprinter Limo Van",
+    tag: "Luxury Van",
+    pax: 14,
+    bags: 10,
+    img: "https://www.grechmotors.com/wp-content/uploads/2024/05/luxury-sprinter-vans-grech-motors-1-scaled.jpg",
+    text: "Luxury Mercedes-Benz Sprinter Limo van chauffeur service for Pearson transfers, executive travel and group transportation.",
+  },
   { name: "Cadillac Escalade ESV Platinum", tag: "Executive choice", pax: 6, bags: 5, img: "f090f455b_generated_image.png", text: "Effortless power and whisper-quiet refinement for executives who expect the best." },
   { name: "GMC Yukon XL Denali Ultimate", tag: "Premium class", pax: 6, bags: 5, img: "6da890299_generated_image.png", text: "Bold design and sophisticated engineering for a first-class ride across the GTA." },
   { name: "Lincoln Navigator Black Label L", tag: "Luxury choice", pax: 7, bags: 5, img: "42ad83497_generated_image.png", text: "Serene, spacious and supremely appointed." },
@@ -38,7 +49,7 @@ export const reviews = [
   { q: "Best in the business. Extremely professional and great service.", n: "Joe Oppedisano" },
   { q: "The driver was professional and on time, the vehicle very clean and comfortable, and the overall service excellent.", n: "Areeba Eshal" },
 ];
-export const areas = ["Toronto","Mississauga","Brampton","Oakville","Vaughan","Markham","Milton","Burlington","Hamilton","Etobicoke","Scarborough","Richmond Hill","Pickering","Ajax","Whitby","Oshawa","Newmarket","Barrie","Niagara Falls","Kitchener","Waterloo","Cambridge","London","Muskoka"];
+export const areas = ["Toronto", "Mississauga", "Brampton", "Oakville", "Vaughan", "Markham", "Milton", "Burlington", "Hamilton", "Etobicoke", "Scarborough", "Richmond Hill", "Pickering", "Ajax", "Whitby", "Oshawa", "Newmarket", "Barrie", "Niagara Falls", "Kitchener", "Waterloo", "Cambridge", "London", "Muskoka"];
 export const faqs = [
   ["How much is a limo to Pearson Airport?", "Every fare is quoted from your exact pickup and drop-off addresses, vehicle and timing. Request a quote and we reply with your exact fare for approval."],
   ["Do you offer flat rates with no surge?", "Yes. Pricing is fixed and transparent, with no surge charges. You know the cost before you book."],

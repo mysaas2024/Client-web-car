@@ -158,7 +158,7 @@ Passenger and luggage capacities below are the values currently stored in `lib/d
 
 | Vehicle | Site label | Passengers | Bags |
 | --- | --- | ---: | ---: |
-| 2026 Chevrolet Suburban High Country | Flagship | 6 | 6 |
+| Mercedes-Benz Sprinter Limo Van | Luxury Van | 14 | 10 |
 | Cadillac Escalade ESV Platinum | Executive choice | 6 | 5 |
 | GMC Yukon XL Denali Ultimate | Premium class | 6 | 5 |
 | Lincoln Navigator Black Label L | Luxury choice | 7 | 5 |

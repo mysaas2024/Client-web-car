@@ -79,7 +79,7 @@ export function ChatBot() {
     }
 
     // FLEET INQUIRIES
-    if (q.includes("fleet") || q.includes("vehicle") || q.includes("car") || q.includes("suv") || q.includes("suburban") || q.includes("escalade") || q.includes("sedan") || q.includes("party bus")) {
+    if (q.includes("fleet") || q.includes("vehicle") || q.includes("car") || q.includes("suv") || q.includes("suburban") || q.includes("escalade") || q.includes("sedan") || q.includes("party bus") || q.includes("sprinter") || q.includes("van")) {
       const fleetList = fleet.map((v) => `• ${v.name} (${v.pax} passengers, ${v.bags} bags)`).join("\n");
       return {
         text: `🚘 Our impeccably maintained luxury fleet features:\n\n${fleetList}\n\nAll vehicles are driven by certified executive chauffeurs and include bottled water, climate control, and device charging.`,
