@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArrowUpRight, Briefcase, Car, Check, Clock, Mail, MapPin, PartyPopper, Phone, Plane, ShieldCheck, Sparkles, Star, User, Users } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { QuoteForm } from "@/components/quote-form";
+import { FareBidder } from "@/components/fare-bidder";
 import { ContactForm } from "@/components/contact-form";
 import { FlightStatus } from "@/components/flight-status";
 import { FloatingCTA } from "@/components/floating-cta";
@@ -87,11 +88,19 @@ export default function Home() {
                 </a>
 
                 <a
-                  href={TEL}
+                  href="#fare-bid"
                   className="cta-secondary inline-flex h-14 items-center gap-3 rounded-xl px-7 text-base font-semibold transition-all hover:scale-105"
+                >
+                  <Sparkles className="size-5 text-primary" />
+                  <span>Name Your Price (Fare Bid)</span>
+                </a>
+
+                <a
+                  href={TEL}
+                  className="hidden sm:inline-flex h-14 items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 text-sm font-semibold text-white/90 hover:border-primary hover:text-primary transition-all"
                   title="Call Abdul Jabbar Chaudrey"
                 >
-                  <Phone className="size-5 text-primary" />
+                  <Phone className="size-4 text-primary" />
                   <span>Call {PHONE}</span>
                 </a>
               </div>
@@ -139,6 +148,9 @@ export default function Home() {
             </CardContent>
           </Card>
         </section>
+
+        {/* ── FARE BIDDING SYSTEM ── */}
+        <FareBidder />
 
         {/* ── STEPS ── */}
         <section className={`${wrap} pb-24`}>

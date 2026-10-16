@@ -5,6 +5,7 @@ import { PHONE, TEL } from "@/lib/data";
 const nav = [
   ["Fleet", "#fleet"],
   ["Services", "#services"],
+  ["Make an Offer", "#fare-bid"],
   ["Airport", "#airport"],
   ["Areas", "#areas"],
   ["FAQ", "#faq"],

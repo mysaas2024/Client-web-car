@@ -21,6 +21,7 @@ interface Message {
 }
 
 const QUICK_PROMPTS = [
+  "🎯 Name Your Price (Fare Bid)",
   "✈️ Airport Pickup Rates",
   "🚘 What vehicles are in the fleet?",
   "💰 How do fixed rates work?",
@@ -37,12 +38,13 @@ export function ChatBot() {
     {
       id: "welcome-1",
       sender: "bot",
-      text: `Hello! Welcome to Classicontariolimo. I am your 24/7 VIP Concierge Assistant. How may I assist your travel plans today?`,
+      text: `Hello! Welcome to Classicontariolimo. I am your 24/7 VIP Concierge Assistant. You can request a quote, explore our fleet, or use our new Fare Bidding feature to name your price and get an instant offer!`,
       time: "Just now",
       actions: [
+        { label: "🎯 Name Your Price / Bid", href: "#fare-bid", isPrimary: true },
         { label: "✈️ Airport Transfer", onClick: () => handleSend("Tell me about airport transfers") },
         { label: "🚘 View Fleet Options", onClick: () => handleSend("What vehicles do you have?") },
-        { label: "📝 Request Fast Quote", href: "#quote", isPrimary: true },
+        { label: "📝 Request Fast Quote", href: "#quote" },
       ],
     },
   ]);
@@ -65,6 +67,18 @@ export function ChatBot() {
 
   const generateBotReply = (query: string): { text: string; actions?: Message["actions"] } => {
     const q = query.toLowerCase();
+
+    // FARE BIDDING / BET SYSTEM / MAKE AN OFFER
+    if (q.includes("bet") || q.includes("bid") || q.includes("offer") || q.includes("name your price") || q.includes("deal") || q.includes("discount") || q.includes("negotiat")) {
+      return {
+        text: `🎯 *Try Our Interactive Fare Bidding System!*\n\nYou can enter the exact dollar amount ($ CAD) you are willing to pay for your trip. Our executive algorithm will immediately evaluate your offer and either:\n\n1. ✅ Accept your bid on the spot.\n2. 🤝 Generate our best guaranteed counter-offer with savings.\n\nAll bids include zero surge pricing, flight tracking, and complimentary airport wait time!`,
+        actions: [
+          { label: "🔥 Place a Bid Now", href: "#fare-bid", isPrimary: true },
+          { label: "Standard Fixed Quote", href: "#quote" },
+          { label: `Direct Negotiate with ${CONTACT_NAME}`, href: TEL },
+        ],
+      };
+    }
 
     // AIRPORT INQUIRIES
     if (q.includes("airport") || q.includes("pearson") || q.includes("flight") || q.includes("terminal") || q.includes("plane")) {

@@ -56,5 +56,6 @@ export const faqs = [
   ["Is flight tracking included?", "Yes. We track your flight in real time and time your pickup to your landing."],
   ["Do you provide corporate chauffeur service?", "Yes. Corporate clients get priority booking, monthly billing with itemized trip reports and a single point of contact."],
   ["What is your wait time policy?", "Airport pickups include 30 minutes of complimentary waiting time."],
+  ["How does the Fare Bidding / Name Your Price system work?", "You can submit the exact fare you wish to pay for your trip. Our dispatch system compares your bid against fleet schedules and instantly approves it or provides a discounted VIP counter-offer held for 15 minutes."],
   ["Do you operate 24/7?", "Yes, every day, day and night, across Toronto and the GTA."],
 ];
