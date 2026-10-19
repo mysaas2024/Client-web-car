@@ -2,7 +2,6 @@ import Image from "next/image";
 import { ArrowUpRight, Briefcase, Car, Check, Clock, Mail, MapPin, PartyPopper, Phone, Plane, ShieldCheck, Sparkles, Star, User, Users } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { QuoteForm } from "@/components/quote-form";
-import { FareBidder } from "@/components/fare-bidder";
 import { ContactForm } from "@/components/contact-form";
 import { FlightStatus } from "@/components/flight-status";
 import { FloatingCTA } from "@/components/floating-cta";
@@ -142,9 +141,6 @@ export default function Home() {
             </CardContent>
           </Card>
         </section>
-
-        {/* ── FARE BIDDING SYSTEM ── */}
-        <FareBidder />
 
         {/* ── STEPS ── */}
         <section className={`${wrap} pb-24`}>

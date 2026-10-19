@@ -182,10 +182,7 @@ export function FareBidder() {
       <div className="mx-auto max-w-6xl px-5 relative z-10">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center mb-12">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary backdrop-blur-md mb-4 shadow-[0_0_20px_rgba(201,165,92,0.25)]">
-            <Flame className="size-4 animate-pulse" />
-            <span>Interactive Fare Bidding & Deal System</span>
-          </div>
+
           <h2 className="text-3xl font-display font-bold sm:text-5xl text-white">
             Name Your Price. <span className="gold-text italic font-normal">Get an Instant VIP Offer.</span>
           </h2>
