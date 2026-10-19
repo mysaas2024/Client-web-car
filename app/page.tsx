@@ -7,6 +7,7 @@ import { ContactForm } from "@/components/contact-form";
 import { FlightStatus } from "@/components/flight-status";
 import { FloatingCTA } from "@/components/floating-cta";
 import { ChatBot } from "@/components/chat-bot";
+import { ServiceMap } from "@/components/service-map";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { PHONE, TEL, WA, EMAIL, CONTACT_NAME, areas, faqs, features, fleet, img, reviews, services, steps } from "@/lib/data";
@@ -65,12 +66,11 @@ export default function Home() {
                     <Star key={i} className="size-3 fill-current" />
                   ))}
                 </div>
-                <span className="text-white/90">Toronto & GTA Premier Chauffeur Service</span>
+                <span className="text-white/90">GTA Classicontariolimo</span>
               </div>
 
               <h1 className="max-w-xl text-5xl leading-[1.02] sm:text-7xl lg:text-[5.2rem]">
                 Travel in Prestige.<br />
-                <span className="font-normal italic gold-text">Arrive in Style.</span>
               </h1>
 
               <p className="mt-7 max-w-lg text-base leading-7 text-white/80 sm:text-lg font-light">
@@ -83,22 +83,16 @@ export default function Home() {
                   href="#quote"
                   className="cta-primary inline-flex h-14 items-center gap-3 rounded-xl px-8 text-base font-bold shadow-2xl hover:scale-105 transition-transform"
                 >
-                  <span>Request a Fixed Quote</span>
+                  <span>Request a Quote</span>
                   <ArrowUpRight className="size-5" />
                 </a>
 
-                <a
-                  href="#fare-bid"
-                  className="cta-secondary inline-flex h-14 items-center gap-3 rounded-xl px-7 text-base font-semibold transition-all hover:scale-105"
-                >
-                  <Sparkles className="size-5 text-primary" />
-                  <span>Name Your Price (Fare Bid)</span>
-                </a>
+
 
                 <a
                   href={TEL}
                   className="hidden sm:inline-flex h-14 items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 text-sm font-semibold text-white/90 hover:border-primary hover:text-primary transition-all"
-                  title="Call Abdul Jabbar Chaudrey"
+                  title="Call Classicontariolimo"
                 >
                   <Phone className="size-4 text-primary" />
                   <span>Call {PHONE}</span>
@@ -385,7 +379,7 @@ export default function Home() {
                 ["Priority VIP Dispatch", "Dedicated on-call scheduling 24/7."],
                 ["Consolidated Billing", "Itemized monthly corporate statements."],
                 ["Central Coordination", "One single contact for all executive travel."],
-                ["Direct Access", "Instant phone access to Abdul Jabbar Chaudrey."],
+                ["Direct Access", "Instant phone access to Classicontariolimo."],
               ].map(([t, d]) => (
                 <li key={t} className="rounded-2xl bg-[#0a0a0f] p-5 border border-white/5">
                   <h3 className="text-base font-bold text-primary">{t}</h3>
@@ -496,6 +490,11 @@ export default function Home() {
               <ContactForm />
             </div>
           </div>
+        </section>
+
+        {/* ── SERVICE AREA & MAP ── */}
+        <section id="areas" className={`${wrap} scroll-mt-24 pb-24`}>
+          <ServiceMap />
         </section>
       </main>
 

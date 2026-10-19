@@ -19,28 +19,17 @@ import {
 } from "lucide-react";
 import { PHONE, TEL, WA, CONTACT_NAME, fleet, img } from "@/lib/data";
 
-interface RoutePreset {
-  from: string;
-  to: string;
-  baseEstimate: number;
-}
-
-const POPULAR_ROUTES: RoutePreset[] = [
-  { from: "Toronto Downtown", to: "Toronto Pearson Airport (YYZ)", baseEstimate: 145 },
-  { from: "Mississauga", to: "Toronto Pearson Airport (YYZ)", baseEstimate: 95 },
-  { from: "Oakville / Burlington", to: "Toronto Pearson Airport (YYZ)", baseEstimate: 165 },
-  { from: "Markham / Richmond Hill", to: "Toronto Pearson Airport (YYZ)", baseEstimate: 140 },
-  { from: "Toronto Downtown", to: "Niagara Falls (Day Trip)", baseEstimate: 360 },
-  { from: "Toronto Core", to: "Hourly Chauffeur Service (3h)", baseEstimate: 285 },
-];
+const BASE_MARKET_FARE = 95;
+const MIN_FARE = 95;
 
 const VEHICLE_MODIFIERS: Record<string, { multiplier: number; tier: string }> = {
+  "Lexus ES 350 Luxury Sedan": { multiplier: 1.0, tier: "Executive Sedan" },
   "Mercedes-Benz S-Class S500": { multiplier: 1.0, tier: "Executive Sedan" },
-  "Cadillac Escalade ESV Platinum": { multiplier: 1.25, tier: "Flagship SUV" },
-  "GMC Yukon XL Denali Ultimate": { multiplier: 1.2, tier: "Luxury SUV" },
-  "Lincoln Navigator Black Label L": { multiplier: 1.22, tier: "Luxury SUV" },
-  "Mercedes-Benz Sprinter Limo Van": { multiplier: 1.7, tier: "VIP Executive Van" },
-  "Luxury Party Bus Executive Coach": { multiplier: 2.4, tier: "Coach / Party Bus" },
+  "Cadillac Escalade ESV Platinum": { multiplier: 1.0, tier: "Flagship SUV" },
+  "GMC Yukon XL Denali Ultimate": { multiplier: 1.0, tier: "Luxury SUV" },
+  "Lincoln Navigator Black Label L": { multiplier: 1.0, tier: "Luxury SUV" },
+  "Mercedes-Benz Sprinter Limo Van": { multiplier: 1.0, tier: "VIP Executive Van" },
+  "Luxury Party Bus Executive Coach": { multiplier: 1.0, tier: "Coach / Party Bus" },
 };
 
 type BidStatus = "idle" | "evaluating" | "revealed";
@@ -53,8 +42,6 @@ interface OfferDetails {
   offeredPrice: number;
   savings: number;
   vehicle: string;
-  from: string;
-  to: string;
   date: string;
   time: string;
   offerId: string;
@@ -62,11 +49,7 @@ interface OfferDetails {
 }
 
 export function FareBidder() {
-  const [selectedRouteIdx, setSelectedRouteIdx] = useState(0);
-  const [customFrom, setCustomFrom] = useState(POPULAR_ROUTES[0].from);
-  const [customTo, setCustomTo] = useState(POPULAR_ROUTES[0].to);
-  const [isCustomRoute, setIsCustomRoute] = useState(false);
-  const [selectedVehicle, setSelectedVehicle] = useState(fleet[1].name); // Escalade default
+  const [selectedVehicle, setSelectedVehicle] = useState(fleet[0].name);
   const [date, setDate] = useState(() => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -74,23 +57,21 @@ export function FareBidder() {
   });
   const [time, setTime] = useState("12:00");
 
-  // Dynamic estimate calculation
-  const baseRoutePrice = isCustomRoute ? 140 : POPULAR_ROUTES[selectedRouteIdx].baseEstimate;
-  const vehicleMod = VEHICLE_MODIFIERS[selectedVehicle]?.multiplier || 1.15;
-  const estimatedMarketFare = Math.round(baseRoutePrice * vehicleMod);
+  // Dynamic estimate calculation (All vehicles flat 95 CAD)
+  const estimatedMarketFare = 95;
 
-  // User bid state
-  const [userBid, setUserBid] = useState<number>(Math.round(estimatedMarketFare * 0.85));
+  // User bid state (All prices default to 95 CAD)
+  const [userBid, setUserBid] = useState<number>(95);
   const [bidStatus, setBidStatus] = useState<BidStatus>("idle");
   const [offerDetails, setOfferDetails] = useState<OfferDetails | null>(null);
   const [countdown, setCountdown] = useState(900); // 15 mins timer for held offer
 
-  // Keep user bid reasonably synched when route or vehicle changes in idle mode
+  // Keep user bid at 95 CAD when vehicle changes in idle mode
   useEffect(() => {
     if (bidStatus === "idle") {
-      setUserBid(Math.round(estimatedMarketFare * 0.85));
+      setUserBid(95);
     }
-  }, [selectedRouteIdx, selectedVehicle, isCustomRoute, estimatedMarketFare, bidStatus]);
+  }, [selectedVehicle, bidStatus]);
 
   // Countdown timer for locked offer
   useEffect(() => {
@@ -108,31 +89,19 @@ export function FareBidder() {
   };
 
   // Bid strength relative to estimate
-  const bidRatio = userBid / (estimatedMarketFare || 1);
-  let bidStrengthText = "Competitive Offer";
-  let bidStrengthColor = "text-amber-400";
-  let bidStrengthBg = "bg-amber-400/10 border-amber-400/30";
+  let bidStrengthText = "Guaranteed Best Rate ($95 CAD)";
+  let bidStrengthColor = "text-emerald-400";
+  let bidStrengthBg = "bg-emerald-400/10 border-emerald-400/30";
 
-  if (bidRatio >= 0.95) {
-    bidStrengthText = "High Acceptance Probability (98%)";
+  if (userBid > 95) {
+    bidStrengthText = "Priority VIP Expedited Booking";
     bidStrengthColor = "text-emerald-400";
     bidStrengthBg = "bg-emerald-400/10 border-emerald-400/30";
-  } else if (bidRatio >= 0.78) {
-    bidStrengthText = "Strong Bid · Smart Counter Likely (85%)";
-    bidStrengthColor = "text-amber-400";
-    bidStrengthBg = "bg-amber-400/10 border-amber-400/30";
-  } else {
-    bidStrengthText = "Budget Bid · Special Deal Required";
+  } else if (userBid < 95) {
+    bidStrengthText = "Minimum $95 CAD Required";
     bidStrengthColor = "text-rose-400";
     bidStrengthBg = "bg-rose-400/10 border-rose-400/30";
   }
-
-  const handleRoutePresetChange = (idx: number) => {
-    setSelectedRouteIdx(idx);
-    setIsCustomRoute(false);
-    setCustomFrom(POPULAR_ROUTES[idx].from);
-    setCustomTo(POPULAR_ROUTES[idx].to);
-  };
 
   const handlePlaceBid = (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,23 +118,10 @@ export function FareBidder() {
         "Zero surge guarantee & all taxes included",
       ];
 
-      if (bidRatio >= 0.92) {
-        // Instant Accept
-        outcome = "accepted";
-        offeredPrice = userBid;
-        perks.unshift("VIP Priority Chauffeur: Abdul Jabbar Chaudrey assigned");
-      } else if (bidRatio >= 0.75) {
-        // Close counter-offer
-        outcome = "counter_close";
-        // Counter offer split the difference or slight adjustment
-        offeredPrice = Math.round(userBid + (estimatedMarketFare - userBid) * 0.45);
-        perks.unshift("Exclusive GTA VIP Deal (Fixed Lock-in)");
-      } else {
-        // Budget counter-offer
-        outcome = "counter_budget";
-        offeredPrice = Math.round(estimatedMarketFare * 0.82);
-        perks.unshift("Lowest Guaranteed Commercial Rate for Luxury Class");
-      }
+      // All vehicles flat 95 CAD - instant acceptance
+      outcome = "accepted";
+      offeredPrice = Math.max(MIN_FARE, userBid);
+      perks.unshift("VIP Priority Chauffeur: Classicontariolimo assigned");
 
       const savings = Math.max(0, estimatedMarketFare - offeredPrice);
 
@@ -176,8 +132,6 @@ export function FareBidder() {
         offeredPrice,
         savings,
         vehicle: selectedVehicle,
-        from: customFrom,
-        to: customTo,
         date,
         time,
         offerId,
@@ -207,8 +161,7 @@ export function FareBidder() {
       `--------------------------------\n` +
       `🎫 *Offer ID:* ${offerDetails.offerId}\n` +
       `🚘 *Vehicle:* ${offerDetails.vehicle}\n` +
-      `📍 *From:* ${offerDetails.from}\n` +
-      `🏁 *To:* ${offerDetails.to}\n` +
+      `📍 *Service:* GTA Airport & Chauffeur Transfer\n` +
       `📅 *Date & Time:* ${offerDetails.date} at ${offerDetails.time}\n` +
       `💰 *My Bid:* $${offerDetails.userBid} CAD\n` +
       `🏷️ *Final Agreed Offer:* $${offerDetails.offeredPrice} CAD\n` +
@@ -246,72 +199,10 @@ export function FareBidder() {
         <div className="mx-auto max-w-4xl rounded-3xl card-luxury p-6 sm:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.8)] border border-primary/30 relative">
           {bidStatus === "idle" && (
             <form onSubmit={handlePlaceBid} className="space-y-8">
-              {/* Step 1: Select or customize route */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-sm font-bold text-white flex items-center gap-2">
-                    <span className="grid size-6 place-items-center rounded-full bg-primary/20 text-primary text-xs font-bold">1</span>
-                    Choose Route or Destination
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setIsCustomRoute(!isCustomRoute)}
-                    className="text-xs font-semibold text-primary hover:underline"
-                  >
-                    {isCustomRoute ? "Use Popular Routes" : "Custom Pickup & Dropoff"}
-                  </button>
-                </div>
-
-                {!isCustomRoute ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                    {POPULAR_ROUTES.map((route, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => handleRoutePresetChange(i)}
-                        className={`text-left p-3.5 rounded-xl border transition-all ${selectedRouteIdx === i && !isCustomRoute
-                            ? "border-primary bg-primary/15 shadow-[0_0_18px_rgba(201,165,92,0.2)] text-white"
-                            : "border-white/10 bg-white/5 text-white/70 hover:border-white/25 hover:text-white"
-                          }`}
-                      >
-                        <p className="text-xs font-semibold truncate text-white">{route.from}</p>
-                        <p className="text-[11px] text-muted-foreground truncate">To {route.to}</p>
-                        <p className="mt-1 text-[11px] font-bold text-primary">From ~${route.baseEstimate} CAD</p>
-                      </button>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <span className="text-xs text-muted-foreground mb-1 block">Pickup Address</span>
-                      <input
-                        type="text"
-                        required
-                        value={customFrom}
-                        onChange={(e) => setCustomFrom(e.target.value)}
-                        placeholder="e.g. 100 Front St W, Toronto or Pearson YYZ"
-                        className="w-full h-11 rounded-xl border border-white/20 bg-background/80 px-3.5 text-sm text-white placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </div>
-                    <div>
-                      <span className="text-xs text-muted-foreground mb-1 block">Drop-off Destination</span>
-                      <input
-                        type="text"
-                        required
-                        value={customTo}
-                        onChange={(e) => setCustomTo(e.target.value)}
-                        placeholder="e.g. Pearson Terminal 1, Oakville, or Markham"
-                        className="w-full h-11 rounded-xl border border-white/20 bg-background/80 px-3.5 text-sm text-white placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Step 2: Vehicle Selection & Timing */}
+              {/* Step 1: Vehicle Selection & Timing */}
               <div>
                 <label className="text-sm font-bold text-white flex items-center gap-2 mb-3">
-                  <span className="grid size-6 place-items-center rounded-full bg-primary/20 text-primary text-xs font-bold">2</span>
+                  <span className="grid size-6 place-items-center rounded-full bg-primary/20 text-primary text-xs font-bold">1</span>
                   Select Vehicle Category
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -323,8 +214,8 @@ export function FareBidder() {
                         type="button"
                         onClick={() => setSelectedVehicle(v.name)}
                         className={`group relative p-3 rounded-2xl border text-left transition-all ${isSelected
-                            ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(201,165,92,0.25)] ring-1 ring-primary"
-                            : "border-white/10 bg-white/5 hover:border-white/30"
+                          ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(201,165,92,0.25)] ring-1 ring-primary"
+                          : "border-white/10 bg-white/5 hover:border-white/30"
                           }`}
                       >
                         <div className="relative h-20 w-full overflow-hidden rounded-lg mb-2 bg-black/40">
@@ -337,8 +228,8 @@ export function FareBidder() {
                           />
                         </div>
                         <p className="text-xs font-bold text-white line-clamp-1">{v.name}</p>
-                        <p className="text-[10px] text-primary font-medium mt-0.5">
-                          {v.tag} · {v.pax} Passengers
+                        <p className="text-[10px] text-primary font-bold mt-0.5">
+                          $95 CAD · {v.tag}
                         </p>
                       </button>
                     );
@@ -368,12 +259,12 @@ export function FareBidder() {
                 </div>
               </div>
 
-              {/* Step 3: Enter Your Bet / Bid Amount */}
+              {/* Step 2: Enter Your Bet / Bid Amount */}
               <div className="rounded-2xl border border-primary/30 bg-black/40 p-6 sm:p-7 relative overflow-hidden">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
                   <div>
                     <label className="text-sm font-bold text-white flex items-center gap-2">
-                      <span className="grid size-6 place-items-center rounded-full bg-primary text-black text-xs font-bold">3</span>
+                      <span className="grid size-6 place-items-center rounded-full bg-primary text-black text-xs font-bold">2</span>
                       Enter Your Offer / Bet Amount ($ CAD)
                     </label>
                     <p className="text-xs text-muted-foreground mt-1">
@@ -399,11 +290,12 @@ export function FareBidder() {
                     </span>
                     <input
                       type="number"
-                      min={30}
+                      min={MIN_FARE}
                       max={2000}
                       step={5}
                       value={userBid}
                       onChange={(e) => setUserBid(Math.max(1, Number(e.target.value) || 0))}
+                      onBlur={() => setUserBid((prev) => Math.max(MIN_FARE, prev))}
                       className="w-full h-16 rounded-2xl border-2 border-primary/50 bg-[#0d0d18] pl-10 pr-16 text-3xl font-display font-bold text-white shadow-[0_0_25px_rgba(201,165,92,0.2)] focus:outline-none focus:border-primary"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-white/50 uppercase">
@@ -414,22 +306,15 @@ export function FareBidder() {
                   {/* Fast Adjust Buttons */}
                   <div className="flex flex-wrap items-center gap-2 w-full sm:w-1/2">
                     {[
-                      { label: "-$10", delta: -10 },
-                      { label: "+$10", delta: 10 },
-                      { label: "+$25", delta: 25 },
-                      { label: "Match -15%", custom: Math.round(estimatedMarketFare * 0.85) },
-                      { label: "Match -25%", custom: Math.round(estimatedMarketFare * 0.75) },
+                      { label: "Flat $95", custom: 95 },
+                      { label: "+$10 ($105)", custom: 105 },
+                      { label: "+$25 ($120)", custom: 120 },
+                      { label: "+$50 ($145)", custom: 145 },
                     ].map((btn, i) => (
                       <button
                         key={i}
                         type="button"
-                        onClick={() => {
-                          if (btn.custom !== undefined) {
-                            setUserBid(btn.custom);
-                          } else {
-                            setUserBid((prev) => Math.max(30, prev + btn.delta));
-                          }
-                        }}
+                        onClick={() => setUserBid(btn.custom)}
                         className="px-3 py-2 rounded-lg border border-white/10 bg-white/5 text-xs font-medium text-white hover:border-primary/50 hover:bg-primary/10 transition-colors"
                       >
                         {btn.label}
@@ -437,6 +322,10 @@ export function FareBidder() {
                     ))}
                   </div>
                 </div>
+
+                <p className="text-[11px] text-muted-foreground mt-2">
+                  * Minimum guaranteed chauffeur reservation bid is <strong className="text-primary">${MIN_FARE} CAD</strong>.
+                </p>
 
                 {/* Live Bid Strength Indicator */}
                 <div className="mt-5 pt-5 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -508,8 +397,8 @@ export function FareBidder() {
               {/* Outcome Badge Banner */}
               <div
                 className={`p-5 rounded-2xl border text-center ${offerDetails.outcome === "accepted"
-                    ? "bg-emerald-950/40 border-emerald-500/50 text-emerald-300 shadow-[0_0_40px_rgba(16,185,129,0.2)]"
-                    : "bg-gradient-to-r from-primary/20 via-amber-950/30 to-primary/20 border-primary/50 text-amber-200 shadow-[0_0_40px_rgba(201,165,92,0.25)]"
+                  ? "bg-emerald-950/40 border-emerald-500/50 text-emerald-300 shadow-[0_0_40px_rgba(16,185,129,0.2)]"
+                  : "bg-gradient-to-r from-primary/20 via-amber-950/30 to-primary/20 border-primary/50 text-amber-200 shadow-[0_0_40px_rgba(201,165,92,0.25)]"
                   }`}
               >
                 <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-1">
@@ -600,9 +489,9 @@ export function FareBidder() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 text-xs">
                   <div>
-                    <span className="text-muted-foreground block">Route:</span>
+                    <span className="text-muted-foreground block">Service Area:</span>
                     <span className="font-semibold text-white mt-0.5 block">
-                      {offerDetails.from} ➔ {offerDetails.to}
+                      GTA Airport & Chauffeur Service
                     </span>
                   </div>
                   <div>

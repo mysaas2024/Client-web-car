@@ -26,7 +26,7 @@ const QUICK_PROMPTS = [
   "🚘 What vehicles are in the fleet?",
   "💰 How do fixed rates work?",
   "⏱️ Hourly Chauffeur Minimum",
-  "📞 Connect with Abdul Jabbar",
+  "📞 Connect with Classicontariolimo",
 ];
 
 export function ChatBot() {
@@ -93,7 +93,7 @@ export function ChatBot() {
     }
 
     // FLEET INQUIRIES
-    if (q.includes("fleet") || q.includes("vehicle") || q.includes("car") || q.includes("suv") || q.includes("suburban") || q.includes("escalade") || q.includes("sedan") || q.includes("party bus") || q.includes("sprinter") || q.includes("van")) {
+    if (q.includes("fleet") || q.includes("vehicle") || q.includes("car") || q.includes("suv") || q.includes("suburban") || q.includes("escalade") || q.includes("sedan") || q.includes("party bus") || q.includes("sprinter") || q.includes("van") || q.includes("lexus")) {
       const fleetList = fleet.map((v) => `• ${v.name} (${v.pax} passengers, ${v.bags} bags)`).join("\n");
       return {
         text: `🚘 Our impeccably maintained luxury fleet features:\n\n${fleetList}\n\nAll vehicles are driven by certified executive chauffeurs and include bottled water, climate control, and device charging.`,
@@ -126,8 +126,8 @@ export function ChatBot() {
       };
     }
 
-    // CONTACT / PHONE / ABDUL JABBAR
-    if (q.includes("contact") || q.includes("phone") || q.includes("call") || q.includes("number") || q.includes("abdul") || q.includes("jabbar") || q.includes("email") || q.includes("manager")) {
+    // CONTACT / PHONE / CLASSICONTARIOLIMO
+    if (q.includes("contact") || q.includes("phone") || q.includes("call") || q.includes("number") || q.includes("classicontariolimo") || q.includes("limo") || q.includes("email") || q.includes("manager")) {
       return {
         text: `👤 You can reach our General Manager & VIP Dispatcher directly:\n\n• Concierge: ${CONTACT_NAME}\n• Phone: ${PHONE} (24/7)\n• Email: ${EMAIL}\n• Base: Toronto, Mississauga & GTA`,
         actions: [

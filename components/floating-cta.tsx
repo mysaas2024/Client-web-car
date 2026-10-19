@@ -29,7 +29,7 @@ export function FloatingCTA() {
           <span className="hidden sm:inline">Quote</span>
         </a>
 
-        {/* Direct Call Abdul Jabbar */}
+        {/* Direct Call Classicontariolimo */}
         <a
           href={TEL}
           className="cta-primary flex h-12 items-center gap-1.5 sm:gap-2 rounded-full px-4 sm:px-5 text-xs font-bold text-black shadow-[0_4px_25px_rgba(201,165,92,0.5)] transition-all hover:scale-105 sm:text-sm"

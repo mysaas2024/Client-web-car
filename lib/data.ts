@@ -2,13 +2,26 @@ export const PHONE = "+1 (416) 824-7400";
 export const TEL = "tel:+14168247400";
 export const WA = "https://wa.me/14168247400";
 export const EMAIL = "classicontariolimos@gmail.com";
-export const CONTACT_NAME = "Abdul Jabbar Chaudrey";
+export const CONTACT_NAME = "Classicontariolimo";
 export const img = (f: string) =>
   f.startsWith("http://") || f.startsWith("https://") || f.startsWith("/")
     ? f
     : `https://media.base44.com/images/public/6a00fb8d57def44ca97fd380/${f}`;
 
 export const fleet = [
+  {
+    name: "Lexus ES 350 Luxury Sedan",
+    tag: "Executive sedan",
+    pax: 3,
+    bags: 3,
+    img: "/images/car.jpeg",
+    text: "Refined Japanese craftsmanship, plush leather seating, and whisper-quiet executive comfort for airport transfers and VIP city travel.",
+  },
+  { name: "Cadillac Escalade ESV Platinum", tag: "Executive choice", pax: 6, bags: 5, img: "f090f455b_generated_image.png", text: "Effortless power and whisper-quiet refinement for executives who expect the best." },
+  { name: "GMC Yukon XL Denali Ultimate", tag: "Premium class", pax: 6, bags: 5, img: "6da890299_generated_image.png", text: "Bold design and sophisticated engineering for a first-class ride across the GTA." },
+  { name: "Lincoln Navigator Black Label L", tag: "Luxury choice", pax: 7, bags: 5, img: "42ad83497_generated_image.png", text: "Serene, spacious and supremely appointed." },
+  { name: "Mercedes-Benz S-Class S500", tag: "Executive sedan", pax: 3, bags: 3, img: "8c0ecc784_generated_image.png", text: "The luxury sedan for discerning executives." },
+  { name: "Luxury Party Bus Executive Coach", tag: "Party bus", pax: 30, bags: 2, img: "cd29f8a9a_generated_image.png", text: "A mobile venue for celebrations, corporate events and VIP groups." },
   {
     name: "Mercedes-Benz Sprinter Limo Van",
     tag: "Luxury Van",
@@ -17,11 +30,6 @@ export const fleet = [
     img: "https://www.grechmotors.com/wp-content/uploads/2024/05/luxury-sprinter-vans-grech-motors-1-scaled.jpg",
     text: "Luxury Mercedes-Benz Sprinter Limo van chauffeur service for Pearson transfers, executive travel and group transportation.",
   },
-  { name: "Cadillac Escalade ESV Platinum", tag: "Executive choice", pax: 6, bags: 5, img: "f090f455b_generated_image.png", text: "Effortless power and whisper-quiet refinement for executives who expect the best." },
-  { name: "GMC Yukon XL Denali Ultimate", tag: "Premium class", pax: 6, bags: 5, img: "6da890299_generated_image.png", text: "Bold design and sophisticated engineering for a first-class ride across the GTA." },
-  { name: "Lincoln Navigator Black Label L", tag: "Luxury choice", pax: 7, bags: 5, img: "42ad83497_generated_image.png", text: "Serene, spacious and supremely appointed." },
-  { name: "Mercedes-Benz S-Class S500", tag: "Executive sedan", pax: 3, bags: 3, img: "8c0ecc784_generated_image.png", text: "The luxury sedan for discerning executives." },
-  { name: "Luxury Party Bus Executive Coach", tag: "Party bus", pax: 30, bags: 2, img: "cd29f8a9a_generated_image.png", text: "A mobile venue for celebrations, corporate events and VIP groups." },
 ];
 export const services = [
   { t: "Airport transfers", d: "Pearson transfers with flight tracking and meet and greet." },
